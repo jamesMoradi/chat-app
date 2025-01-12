@@ -3,6 +3,8 @@
 /node_modules
 
 # envirinment variables
+/.env
+env
 .env
 *.env
 
