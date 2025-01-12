@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+this chat application created with socket, redis, graphQL and postgresql. After register, user can chat with other users in a groupe or with a single user
 
 ## Installation
 
