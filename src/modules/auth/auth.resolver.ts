@@ -4,9 +4,11 @@ import { LoginResponse, RegisterResponse } from './auth.types'
 import { RegisterDto } from './dto/register.dto'
 import { Request, Response } from 'express'
 import { LoginDto } from './dto/login.dto'
-import { BadRequestException, UseGuards } from '@nestjs/common'
+import { BadRequestException, UseFilters, UseGuards } from '@nestjs/common'
 import { GQLGuard } from 'src/common/guards/gql-auth.guard'
+import { GQLErrorFilter } from 'src/common/execption/gql-filter.exception'
 
+@UseFilters(GQLErrorFilter)
 @ObjectType()
 export class AuthResolver {
     constructor(private readonly authService: AuthService) {}
@@ -44,7 +46,7 @@ export class AuthResolver {
     }
 
     @Query(() => String)
-sayHello(): string {
-return 'Hello World!';
-}
+        sayHello(): string {
+        return 'Hello World!';
+    }
 }
