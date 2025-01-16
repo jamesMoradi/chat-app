@@ -7,35 +7,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User {
-  id                Int         @id @default(autoincrement())
-  fullname          String
-  avatarUrl         String?
-  email             String      @unique
-  password          String
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-  chatRooms         ChatRoom[]  @relation("ChatroomUser")
-  messages          Message[]
+  id              Int             @id @default(autoincrement())
+  fullname        String
+  avatarUrl       String?
+  email           String          @unique
+  emailVerifiedAt DateTime?
+  password        String
+  rememberToken   String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  chatRooms       ChatRoom[]      @relation("ChatRoomUsers")
+  messages        Message[]
+  ChatRoomUsers   ChatRoomUsers[]
 }
 
 model ChatRoom {
-  id                Int         @id @default(autoincrement())
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-  name              String
-  users             User[]      @relation("ChatroomUser")
-  messages          Message[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  users         User[]          @relation("ChatRoomUsers")
+  messages      Message[]
+  ChatRoomUsers ChatRoomUsers[]
 }
 
 model Message {
-  id                Int         @id @default(autoincrement())
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-  content           String
-  imageUrl          String?
-  userId            Int
-  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  chatRoomId        Int
-  chatRoom          ChatRoom    @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+  id         Int      @id @default(autoincrement())
+  content    String
+  imageUrl   String?
+  userId     Int
+  chatRoomId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+}
+
+model ChatRoomUsers {
+  chatRoomId Int
+  userId     Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+
+  @@id([chatRoomId, userId])
 }

@@ -7,6 +7,8 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { join } from "path";
 import { GQLConfig } from "./config/gql.config";
 import { ServeStaticModule } from "@nestjs/serve-static";
+import { ChatRoomModule } from "./modules/chat-room/chat-room.module";
+import { LiveChatRoomModule } from './modules/live-chat-room/live-chat-room.module';
 
 @Module({
     imports: [
@@ -16,8 +18,11 @@ import { ServeStaticModule } from "@nestjs/serve-static";
         }),
         AuthModule,
         UserModule,
+        ChatRoomModule,
         GraphQLModule.forRootAsync(GQLConfig()),
-        ConfigModule.forRoot({isGlobal: true})
+        ConfigModule.forRoot({isGlobal: true}),
+        ChatRoomModule,
+        LiveChatRoomModule
     ]
 })
 export class AppModule {}
